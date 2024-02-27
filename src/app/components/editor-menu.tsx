@@ -20,6 +20,8 @@ export const EditorMenu = () => {
       position: { x: x, y: y },
       data: { label: "Rename this node" },
       type: "customNode",
+      draggable: true,
+      dragging: true,
     };
     dispatch(addNode(newNode));
   };

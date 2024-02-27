@@ -25,15 +25,22 @@ export const nodeSlice = createSlice({
       );
       state.nodes[index] = action.payload;
     },
+    updateNodes: (state, action: PayloadAction<Node[]>) => {
+      state.nodes = action.payload;
+    },
     updateNodeTitle: (state, action: PayloadAction<NodeTitle>) => {
       const index = state.nodes.findIndex(
         (item) => item.id === action.payload.id
       );
       state.nodes[index].data = action.payload.data;
     },
+    deleteNode: (state, action: PayloadAction<string>) => {
+      state.nodes = state.nodes.filter((item) => item.id !== action.payload);
+    },
   },
 });
 
-export const { addNode, updateNode, updateNodeTitle } = nodeSlice.actions;
+export const { addNode, updateNode, updateNodeTitle, updateNodes, deleteNode } =
+  nodeSlice.actions;
 
 export default nodeSlice.reducer;
