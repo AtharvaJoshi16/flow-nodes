@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import nodeReducer from "../(slice)/nodeSlice";
+import edgeReducer from "../(slice)/edgeSlice";
 
 export const store = configureStore({
   reducer: {
     nodes: nodeReducer,
+    edges: edgeReducer,
   },
 });
 

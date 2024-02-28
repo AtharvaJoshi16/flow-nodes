@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Node, NodeProps } from "reactflow";
+import { Handle, Node, NodeProps, Position } from "reactflow";
 import {
   NodeTitle,
   deleteNode,
@@ -48,6 +48,8 @@ export const CustomNode = (props: NodeProps) => {
         { "border-sky-600": contentEditable }
       )}
     >
+      <Handle type="source" position={Position.Top} isConnectable />
+      <Handle type="source" position={Position.Bottom} isConnectable />
       <div className="absolute top-[-15px] right-[10px] flex items-center gap-[15px]">
         <Button
           className="rounded-full w-[30px] h-[30px] p-2"
@@ -80,6 +82,8 @@ export const CustomNode = (props: NodeProps) => {
       ) : (
         <h3 className="p-[10px]">{nodeName}</h3>
       )}
+      <Handle type="target" position={Position.Right} isConnectable />
+      <Handle type="target" position={Position.Left} isConnectable />
     </div>
   );
 };
