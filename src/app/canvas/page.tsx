@@ -16,6 +16,7 @@ import "reactflow/dist/style.css";
 import { updateNode, updateNodes } from "../(slice)/nodeSlice";
 import { addEdge as addEdgeAction, updateEdges } from "../(slice)/edgeSlice";
 import { addEdge } from "reactflow";
+import "./styles.css";
 
 export default function Canvas() {
   const nodes = useSelector((state: RootState) => state.nodes.nodes);
@@ -45,7 +46,7 @@ export default function Canvas() {
   );
 
   return (
-    <div className="h-[90vh] w-[90vw]">
+    <div className="h-[90vh] w-[90vw] m-auto">
       <ReactFlow
         nodes={nodes}
         edges={edges}

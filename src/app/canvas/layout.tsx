@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/mode-toggle";
 import { EditorMenu } from "../components/editor-menu";
 
 export default function CanvasLayout({
@@ -7,6 +8,7 @@ export default function CanvasLayout({
 }) {
   return (
     <>
+      <ModeToggle />
       <EditorMenu />
       {children}
     </>

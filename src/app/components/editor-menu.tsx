@@ -8,6 +8,8 @@ import { Node } from "reactflow";
 import { v4 as uuidv4 } from "uuid";
 
 import { addNode } from "../(slice)/nodeSlice";
+import { Combobox } from "./combobox";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export const EditorMenu = () => {
   const dispatch = useDispatch();
@@ -31,11 +33,13 @@ export const EditorMenu = () => {
       <Button
         onClick={initiateNewNode}
         title="Add a node"
-        variant="outline"
-        size="icon"
+        variant="secondary"
+        className="flex items-center gap-[10px] justify-between"
       >
+        <h3 className="font-normal">Add a node</h3>
         <PlusCircle size={20} />
       </Button>
+      <Combobox />
     </div>
   );
 };

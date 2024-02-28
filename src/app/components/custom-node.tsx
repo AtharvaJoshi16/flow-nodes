@@ -44,7 +44,7 @@ export const CustomNode = (props: NodeProps) => {
     <div
       ref={nodeRef}
       className={cn(
-        "p-[20px] min-w-[200px] rounded-lg border-2 bg-white relative [contenteditable=`true`]:focus-visible:outline-2 ",
+        "p-[20px] min-w-[200px] rounded-lg border-2 relative [contenteditable=`true`]:focus-visible:outline-2 ",
         { "border-sky-600": contentEditable }
       )}
     >
