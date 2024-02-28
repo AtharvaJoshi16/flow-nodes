@@ -6,3 +6,7 @@
 .react-flow__handle {
   background-color: rgb(0, 68, 158);
 }
+
+.react-flow__attribution {
+  display: none;
+}
