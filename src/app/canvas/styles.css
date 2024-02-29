@@ -1,10 +1,12 @@
 .react-flow__edge-path {
   stroke: rgb(255, 196, 2);
   stroke-width: 2.5px;
+  stroke-linecap: round;
 }
 
 .react-flow__handle {
-  background-color: rgb(0, 68, 158);
+  background-color: transparent;
+  border: transparent;
 }
 
 .react-flow__attribution {

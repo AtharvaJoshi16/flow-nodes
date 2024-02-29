@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Trash } from "lucide-react";
 import cn from "classnames";
 import { Input } from "@/components/ui/input";
+import { twMerge } from "tailwind-merge";
+import { Menu } from "./menu";
 
 export const CustomNode = (props: NodeProps) => {
   const dispatch = useDispatch();
@@ -40,6 +42,42 @@ export const CustomNode = (props: NodeProps) => {
       setContentEditable(false);
     }
   };
+
+  return (
+    <Menu>
+      <div
+        ref={nodeRef}
+        onBlur={() => {
+          setContentEditable(false);
+          nodeRef.current?.classList.add("border-none");
+          nodeRef.current?.classList.remove("border-sky-600", "rounded-lg");
+        }}
+        onDoubleClick={() => setContentEditable(true)}
+        className="border-none"
+        onClick={(e) => {
+          nodeRef.current?.classList.remove("border-none");
+          nodeRef.current?.classList.add("border-sky-600", "rounded-lg");
+        }}
+      >
+        <Handle type="target" position={Position.Left} isConnectable />
+        {contentEditable ? (
+          <Input
+            className="min-w-[20px]"
+            value={nodeName}
+            placeholder="Name your node..."
+            id="node-name"
+            name="node-name"
+            onBlur={handleBlur}
+            onChange={(e) => setNodeName(e.target.value)}
+          />
+        ) : (
+          <h3 className="p-[10px]">{nodeName}</h3>
+        )}
+        <Handle type="source" position={Position.Right} isConnectable />
+      </div>
+    </Menu>
+  );
+
   return (
     <div
       ref={nodeRef}

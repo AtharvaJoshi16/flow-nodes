@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import { addNode } from "../(slice)/nodeSlice";
 import { Combobox } from "./combobox";
 import { ModeToggle } from "@/components/mode-toggle";
+import { alignment, frameworks } from "../(options)";
 
 export const EditorMenu = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,8 @@ export const EditorMenu = () => {
         <h3 className="font-normal">Add a node</h3>
         <PlusCircle size={20} />
       </Button>
-      <Combobox />
+      <Combobox list={frameworks} />
+      <Combobox list={alignment} />
     </div>
   );
 };

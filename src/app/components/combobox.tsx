@@ -18,25 +18,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const frameworks = [
-  {
-    value: "flowchart",
-    label: "Flowchart",
-  },
-  {
-    value: "schema",
-    label: "Schema",
-  },
-  {
-    value: "mind-map",
-    label: "Mind Map",
-  },
-];
-
-export function Combobox() {
+export function Combobox({
+  list,
+}: {
+  list: {
+    title: string;
+    items: any[];
+  };
+}) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
-
+  const { title, items } = list;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -48,21 +40,21 @@ export function Combobox() {
         >
           <h3 className="font-normal">
             {value
-              ? frameworks.find((framework) => framework.value === value)?.label
-              : "Choose a pattern"}
+              ? items.find((item) => item.value === value)?.label
+              : `Choose ${title}`}
           </h3>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search a pattern" />
+          <CommandInput placeholder={`Search ${title}`} />
           <CommandEmpty>No pattern found.</CommandEmpty>
           <CommandGroup>
-            {frameworks.map((framework) => (
+            {items.map((item) => (
               <CommandItem
-                key={framework.value}
-                value={framework.value}
+                key={item.value}
+                value={item.value}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
                   setOpen(false);
@@ -71,10 +63,10 @@ export function Combobox() {
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === framework.value ? "opacity-100" : "opacity-0"
+                    value === item.value ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {framework.label}
+                {item.label}
               </CommandItem>
             ))}
           </CommandGroup>
