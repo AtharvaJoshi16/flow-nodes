@@ -17,6 +17,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../(store)";
+import {
+  Alignment,
+  Patterns,
+  setAlignment,
+  setPattern,
+} from "../(slice)/optionsSlice";
+import { updateNodeHandlePositions } from "../(slice)/nodeSlice";
+import { alignment } from "../(options)";
+import { Position } from "reactflow";
 
 export function Combobox({
   list,
@@ -27,7 +38,11 @@ export function Combobox({
   };
 }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(
+    list.title === "Alignment" ? "horizontal" : "mind-map"
+  );
+  const dispatch = useDispatch();
+
   const { title, items } = list;
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -58,6 +73,27 @@ export function Combobox({
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
                   setOpen(false);
+                  if (title === "Alignment") {
+                    dispatch(setAlignment(currentValue as Alignment));
+                    if (currentValue === "vertical") {
+                      dispatch(
+                        updateNodeHandlePositions({
+                          target: Position.Top,
+                          source: Position.Bottom,
+                        })
+                      );
+                    } else {
+                      dispatch(
+                        updateNodeHandlePositions({
+                          target: Position.Left,
+                          source: Position.Right,
+                        })
+                      );
+                    }
+                  }
+
+                  title === "Patterns" &&
+                    dispatch(setPattern(currentValue as Patterns));
                 }}
               >
                 <Check

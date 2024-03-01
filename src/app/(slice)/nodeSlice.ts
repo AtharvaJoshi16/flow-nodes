@@ -37,10 +37,28 @@ export const nodeSlice = createSlice({
     deleteNode: (state, action: PayloadAction<string>) => {
       state.nodes = state.nodes.filter((item) => item.id !== action.payload);
     },
+    updateNodeHandlePositions: (
+      state,
+      action: PayloadAction<{
+        target: any;
+        source: any;
+      }>
+    ) => {
+      state.nodes.forEach((node) => {
+        node.targetPosition = action.payload.target;
+        node.sourcePosition = action.payload.source;
+      });
+    },
   },
 });
 
-export const { addNode, updateNode, updateNodeTitle, updateNodes, deleteNode } =
-  nodeSlice.actions;
+export const {
+  addNode,
+  updateNode,
+  updateNodeTitle,
+  updateNodes,
+  deleteNode,
+  updateNodeHandlePositions,
+} = nodeSlice.actions;
 
 export default nodeSlice.reducer;

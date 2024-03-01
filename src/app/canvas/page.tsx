@@ -17,13 +17,14 @@ import { updateNode, updateNodes } from "../(slice)/nodeSlice";
 import { addEdge as addEdgeAction, updateEdges } from "../(slice)/edgeSlice";
 import { addEdge } from "reactflow";
 import "./styles.css";
+import { MindMapNode } from "../components/nodes/mind-map";
 
 export default function Canvas() {
   const nodes = useSelector((state: RootState) => state.nodes.nodes);
   const edges = useSelector((state: RootState) => state.edges.edges);
+  const alignment = useSelector((state: RootState) => state.options.alignment);
   const nodeTypes = useMemo(() => ({ customNode: CustomNode }), []);
   const dispatch = useDispatch();
-
   const onNodesChange = useCallback(
     (changes) => {
       dispatch(updateNodes(applyNodeChanges(changes, [...nodes])));
@@ -44,9 +45,8 @@ export default function Canvas() {
     },
     [edges]
   );
-
   return (
-    <div className="h-[90vh] w-[90vw] m-auto">
+    <div className="h-[100vh] w-[100vw] m-auto">
       <ReactFlow
         nodes={nodes}
         edges={edges}
