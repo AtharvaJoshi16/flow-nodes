@@ -15,6 +15,7 @@ import { Menu } from "./menu";
 import { MindMapNode } from "./nodes/mind-map";
 import { RootState } from "../(store)";
 import { Patterns } from "../(slice)/optionsSlice";
+import { SchemaNode } from "./nodes/schema";
 
 export const CustomNode = (props: NodeProps) => {
   const dispatch = useDispatch();
@@ -95,13 +96,11 @@ export const CustomNode = (props: NodeProps) => {
 
     case Patterns.SCHEMA:
       return (
-        <MindMapNode
+        <SchemaNode
+          nodeId={props.id}
           nodeRef={nodeRef}
-          nodeName={nodeName}
-          setNodeName={setNodeName}
           setContentEditable={setContentEditable}
           contentEditable={contentEditable}
-          handleBlur={handleBlur}
         />
       );
     default:

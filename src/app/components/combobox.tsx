@@ -31,11 +31,13 @@ import { Position } from "reactflow";
 
 export function Combobox({
   list,
+  disabled = false,
 }: {
   list: {
     title: string;
     items: any[];
   };
+  disabled?: boolean;
 }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(
@@ -46,7 +48,7 @@ export function Combobox({
   const { title, items } = list;
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild disabled={disabled}>
         <Button
           variant="secondary"
           role="combobox"

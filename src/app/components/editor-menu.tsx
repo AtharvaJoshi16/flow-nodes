@@ -11,10 +11,11 @@ import { addNode } from "../(slice)/nodeSlice";
 import { Combobox } from "./combobox";
 import { ModeToggle } from "@/components/mode-toggle";
 import { alignment, frameworks } from "../(options)";
+import { Patterns } from "../(slice)/optionsSlice";
 
 export const EditorMenu = () => {
   const dispatch = useDispatch();
-
+  const pattern = useSelector((state: RootState) => state.options.patterns);
   const initiateNewNode = () => {
     const x = Math.random() * 300;
     const y = Math.random() * 300;
@@ -41,7 +42,7 @@ export const EditorMenu = () => {
         <PlusCircle size={20} />
       </Button>
       <Combobox list={frameworks} />
-      <Combobox list={alignment} />
+      <Combobox disabled={pattern !== Patterns.MIND_MAP} list={alignment} />
     </div>
   );
 };
