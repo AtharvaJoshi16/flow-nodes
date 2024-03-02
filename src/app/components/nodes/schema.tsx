@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FontBoldIcon, FontItalicIcon } from "@radix-ui/react-icons";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Pencil, Trash, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { deleteNode } from "@/app/(slice)/nodeSlice";
 import { useDispatch } from "react-redux";
@@ -98,6 +98,22 @@ export const SchemaNode = ({
           onClick={() => dispatch(deleteNode(nodeId))}
         >
           <Trash size={20} />
+        </Button>
+        <Button
+          className="rounded-full w-[30px] h-[30px] p-2"
+          variant="secondary"
+          size="sm"
+          onClick={() => {
+            const copy = { ...nodeData };
+            copy.fields.push({
+              id: Math.random() * 10,
+              label: "Field Name",
+              type: "Field Type",
+            });
+            setNodeData(copy);
+          }}
+        >
+          <Plus size={20} />
         </Button>
       </div>
       {showMenu && (

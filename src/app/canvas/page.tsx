@@ -3,13 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactFlow, {
   Background,
   Controls,
-  ReactFlowInstance,
   applyEdgeChanges,
   applyNodeChanges,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { RootState } from "../(store)";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { CustomNode } from "../components/custom-node";
 import React, { useState, useRef } from "react";
 import "reactflow/dist/style.css";
@@ -17,14 +16,19 @@ import { updateNode, updateNodes } from "../(slice)/nodeSlice";
 import { addEdge as addEdgeAction, updateEdges } from "../(slice)/edgeSlice";
 import { addEdge } from "reactflow";
 import "./styles.css";
-import { MindMapNode } from "../components/nodes/mind-map";
+import DownloadButton from "../components/download-image";
 
 export default function Canvas() {
   const nodes = useSelector((state: RootState) => state.nodes.nodes);
   const edges = useSelector((state: RootState) => state.edges.edges);
-  const alignment = useSelector((state: RootState) => state.options.alignment);
-  const nodeTypes = useMemo(() => ({ customNode: CustomNode }), []);
+  const pattern = useSelector((state: RootState) => state.options.patterns);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(updateNodes([]));
+  }, [pattern]);
+
+  const nodeTypes = useMemo(() => ({ customNode: CustomNode }), []);
   const onNodesChange = useCallback(
     (changes) => {
       dispatch(updateNodes(applyNodeChanges(changes, [...nodes])));
@@ -46,7 +50,7 @@ export default function Canvas() {
     [edges]
   );
   return (
-    <div className="h-[100vh] w-[100vw] m-auto">
+    <div className="h-[100vh] w-[95vw] m-auto">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -56,7 +60,8 @@ export default function Canvas() {
         onConnect={onConnect}
       >
         <Background />
-        <Controls />
+        <DownloadButton />
+        <Controls position="top-right" fitViewOptions={{ duration: 800 }} />
       </ReactFlow>
     </div>
   );

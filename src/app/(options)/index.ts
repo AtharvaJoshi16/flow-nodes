@@ -1,3 +1,5 @@
+import { MarkerType } from "reactflow";
+
 export const frameworks = {
   title: "Patterns",
   items: [
@@ -38,6 +40,28 @@ export const alignment = {
     {
       value: "horizontal",
       label: "Horizontal",
+    },
+  ],
+};
+
+export const EdgeStyles = {
+  title: "Edge Style",
+  items: [
+    {
+      value: `${MarkerType.Arrow}-1`,
+      label: "End Arrow",
+    },
+    {
+      value: `${MarkerType.ArrowClosed}-1`,
+      label: "Close End Arrow",
+    },
+    {
+      value: `${MarkerType.ArrowClosed}-2`,
+      label: "Close Both End Arrow",
+    },
+    {
+      value: `${MarkerType.Arrow}-2`,
+      label: "Both End Arrow",
     },
   ],
 };
