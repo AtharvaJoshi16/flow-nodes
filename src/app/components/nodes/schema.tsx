@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontBoldIcon, FontItalicIcon } from "@radix-ui/react-icons";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Pencil, Plus, Trash, Trash2 } from "lucide-react";
+import {
+  MoreHorizontal,
+  Option,
+  Pencil,
+  Plus,
+  Trash,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { deleteNode } from "@/app/(slice)/nodeSlice";
 import { useDispatch } from "react-redux";
-import { Handle, Position } from "reactflow";
+import { Handle, NodeToolbar, Position } from "reactflow";
 import { InputGroup } from "../input-group";
 import { Input } from "@/components/ui/input";
 import classNames from "classnames";
+import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
 
 interface SchemaNodeData {
   name: string;
@@ -23,13 +31,29 @@ export interface FieldProps {
 }
 
 export const SchemaNode = ({
+  node,
+  data,
   nodeId,
-  nodeRef,
   contentEditable,
   setContentEditable,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const dispatch = useDispatch();
+  const nodeRef = useRef<HTMLDivElement>(null);
+
+  const handleOutsideClick = (e) => {
+    if (nodeRef.current && !nodeRef.current.contains(e.target)) {
+      setShowMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   const [nodeData, setNodeData] = useState<SchemaNodeData>({
     name: "Table 1",
     fields: [
@@ -63,9 +87,8 @@ export const SchemaNode = ({
       className={classNames(
         "min-w-[200px] rounded-lg border-2 border-slate-700 relative [contenteditable=`true`]:focus-visible:outline-2 "
       )}
-      ref={nodeRef}
+      // ref={nodeRef}
       onBlur={() => {
-        setShowMenu(false);
         setContentEditable(false);
         nodeRef.current?.classList.remove("border-sky-600");
         nodeRef.current?.classList.add("rounded-lg", "border-slate-700");
@@ -77,7 +100,7 @@ export const SchemaNode = ({
       }}
       onContextMenu={(e) => {
         e.preventDefault();
-        setShowMenu(!showMenu);
+        setShowMenu(true);
       }}
     >
       <div className="absolute top-[-15px] right-[10px] flex items-center gap-[15px]">
@@ -116,22 +139,6 @@ export const SchemaNode = ({
           <Plus size={20} />
         </Button>
       </div>
-      {showMenu && (
-        <ToggleGroup
-          className="absolute top-[-35px] z-1000 border-1 border-slate-300 rounded-sm"
-          type="multiple"
-        >
-          <ToggleGroupItem value="bold" aria-label="Toggle bold">
-            <FontBoldIcon />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="italic" aria-label="Toggle italic">
-            <FontItalicIcon />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="delete" aria-label="Delete Node">
-            <Trash2 stroke="#DA0000" strokeWidth={2.5} size={15} />
-          </ToggleGroupItem>
-        </ToggleGroup>
-      )}
       <Handle
         style={{
           width: "40px",

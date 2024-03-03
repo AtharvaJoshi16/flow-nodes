@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { CSSProperties } from "react";
 import { Node } from "reactflow";
 
 export interface NodeSliceProps {
@@ -7,6 +8,8 @@ export interface NodeSliceProps {
 }
 
 export type NodeTitle = Pick<Node, "data" | "id">;
+
+export type NodeStyle = Pick<Node, "id" | "style">;
 
 const initialState: NodeSliceProps = {
   nodes: [],
@@ -34,6 +37,14 @@ export const nodeSlice = createSlice({
       );
       state.nodes[index].data = action.payload.data;
     },
+    updateNodeStyle: (state, action: PayloadAction<NodeStyle>) => {
+      const index = state.nodes.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      const styles: Object = { ...state.nodes[index].style };
+      Object.assign(styles, { ...action.payload.style });
+      state.nodes[index].style = styles as CSSProperties;
+    },
     deleteNode: (state, action: PayloadAction<string>) => {
       state.nodes = state.nodes.filter((item) => item.id !== action.payload);
     },
@@ -59,6 +70,7 @@ export const {
   updateNodes,
   deleteNode,
   updateNodeHandlePositions,
+  updateNodeStyle,
 } = nodeSlice.actions;
 
 export default nodeSlice.reducer;

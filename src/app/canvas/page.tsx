@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactFlow, {
   Background,
   Controls,
+  MiniMap,
   applyEdgeChanges,
   applyNodeChanges,
 } from "reactflow";
@@ -62,6 +63,13 @@ export default function Canvas() {
         <Background />
         <DownloadButton />
         <Controls position="top-right" fitViewOptions={{ duration: 800 }} />
+        <MiniMap
+          nodeStrokeWidth={3}
+          maskColor="#e2e2e2"
+          position="bottom-left"
+          offsetScale={10}
+          style={{ bottom: "140px" }}
+        />
       </ReactFlow>
     </div>
   );

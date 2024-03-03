@@ -1,16 +1,18 @@
 import { Alignment } from "@/app/(slice)/optionsSlice";
 import { RootState } from "@/app/(store)";
 import { Input } from "@/components/ui/input";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { Handle, Position } from "reactflow";
+import { MouseEvent, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
 
 import { FontBoldIcon, FontItalicIcon } from "@radix-ui/react-icons";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Trash2 } from "lucide-react";
+import { updateNodeStyle } from "@/app/(slice)/nodeSlice";
 export const MindMapNode = ({
-  nodeRef,
+  node,
+  data,
   contentEditable,
   setContentEditable,
   nodeName,
@@ -18,14 +20,53 @@ export const MindMapNode = ({
   setNodeName,
 }) => {
   const alignment = useSelector((state: RootState) => state.options.alignment);
-  const [showMenu, setShowMenu] = useState(false);
-  const toggleGroupRef = useRef<HTMLDivElement>(null);
+  const nodes = useSelector((state: RootState) => state.nodes.nodes);
+
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
+
+  const handleOption = (e, opt: string) => {
+    const state = e.currentTarget.dataset.state;
+    switch (opt) {
+      case "bold": {
+        dispatch(
+          updateNodeStyle({
+            id: node.id,
+            style:
+              state === "off"
+                ? {
+                    fontWeight: "bold",
+                  }
+                : {
+                    fontWeight: 500,
+                  },
+          })
+        );
+      }
+      case "italic": {
+        dispatch(
+          updateNodeStyle({
+            id: node.id,
+            style:
+              state === "off"
+                ? {
+                    fontStyle: "italic",
+                  }
+                : {
+                    fontStyle: "normal",
+                  },
+          })
+        );
+      }
+      default: {
+      }
+    }
+  };
 
   return (
     <div
       ref={nodeRef}
       onBlur={() => {
-        setShowMenu(false);
         setContentEditable(false);
         nodeRef.current?.classList.add("border-none");
         nodeRef.current?.classList.remove("border-sky-600", "rounded-lg");
@@ -36,28 +77,28 @@ export const MindMapNode = ({
         nodeRef.current?.classList.remove("border-none");
         nodeRef.current?.classList.add("border-sky-600", "rounded-lg");
       }}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        setShowMenu(!showMenu);
-      }}
     >
-      {showMenu && (
-        <ToggleGroup
-          ref={toggleGroupRef}
-          className="absolute top-[-35px] z-1000 border-1 border-slate-300 rounded-sm"
-          type="multiple"
-        >
-          <ToggleGroupItem value="bold" aria-label="Toggle bold">
+      <NodeToolbar
+        isVisible={data.toolbarVisible}
+        className="z-400"
+        position={Position.Top}
+        style={{ top: "-10px" }}
+      >
+        <ToggleGroup className="bg-slate-200 rounded-md p-1" type="multiple">
+          <ToggleGroupItem
+            onClick={(e) => handleOption(e, "bold")}
+            value="bold"
+          >
             <FontBoldIcon />
           </ToggleGroupItem>
-          <ToggleGroupItem value="italic" aria-label="Toggle italic">
-            <FontItalicIcon />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="delete" aria-label="Delete Node">
-            <Trash2 stroke="#DA0000" strokeWidth={2.5} size={15} />
+          <ToggleGroupItem
+            onClick={(e) => handleOption(e, "italic")}
+            value="italic"
+          >
+            <FontItalicIcon strokeWidth={3} />
           </ToggleGroupItem>
         </ToggleGroup>
-      )}
+      </NodeToolbar>
 
       <Handle
         type="target"

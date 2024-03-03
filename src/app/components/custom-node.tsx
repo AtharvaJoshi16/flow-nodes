@@ -22,19 +22,6 @@ export const CustomNode = (props: NodeProps) => {
   const pattern = useSelector((state: RootState) => state.options.patterns);
   const [nodeName, setNodeName] = useState("Node 1");
   const [contentEditable, setContentEditable] = useState(false);
-  const nodeRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (nodeRef.current && !nodeRef.current.contains(event.target)) {
-        setContentEditable(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, []);
 
   const handleBlur = () => {
     if (nodeName) {
@@ -51,7 +38,8 @@ export const CustomNode = (props: NodeProps) => {
     case Patterns.MIND_MAP:
       return (
         <MindMapNode
-          nodeRef={nodeRef}
+          node={props}
+          data={props.data}
           nodeName={nodeName}
           setNodeName={setNodeName}
           setContentEditable={setContentEditable}
@@ -62,7 +50,8 @@ export const CustomNode = (props: NodeProps) => {
     case Patterns.ERD:
       return (
         <MindMapNode
-          nodeRef={nodeRef}
+          node={props}
+          data={props.data}
           nodeName={nodeName}
           setNodeName={setNodeName}
           setContentEditable={setContentEditable}
@@ -73,7 +62,8 @@ export const CustomNode = (props: NodeProps) => {
     case Patterns.FS:
       return (
         <MindMapNode
-          nodeRef={nodeRef}
+          node={props}
+          data={props.data}
           nodeName={nodeName}
           setNodeName={setNodeName}
           setContentEditable={setContentEditable}
@@ -85,7 +75,8 @@ export const CustomNode = (props: NodeProps) => {
     case Patterns.STICKY_NOTES:
       return (
         <MindMapNode
-          nodeRef={nodeRef}
+          node={props}
+          data={props.data}
           nodeName={nodeName}
           setNodeName={setNodeName}
           setContentEditable={setContentEditable}
@@ -97,8 +88,9 @@ export const CustomNode = (props: NodeProps) => {
     case Patterns.SCHEMA:
       return (
         <SchemaNode
+          node={props}
+          data={props.data}
           nodeId={props.id}
-          nodeRef={nodeRef}
           setContentEditable={setContentEditable}
           contentEditable={contentEditable}
         />
@@ -106,7 +98,6 @@ export const CustomNode = (props: NodeProps) => {
     default:
       return (
         <div
-          ref={nodeRef}
           className={cn(
             "p-[20px] min-w-[200px] rounded-lg border-2 relative [contenteditable=`true`]:focus-visible:outline-2 ",
             { "border-sky-600": contentEditable }
