@@ -41,7 +41,7 @@ export const nodeSlice = createSlice({
       const index = state.nodes.findIndex(
         (item) => item.id === action.payload.id
       );
-      const styles: Object = { ...state.nodes[index].style };
+      const styles: Object = { ...state.nodes?.[index].style };
       Object.assign(styles, { ...action.payload.style });
       state.nodes[index].style = styles as CSSProperties;
     },

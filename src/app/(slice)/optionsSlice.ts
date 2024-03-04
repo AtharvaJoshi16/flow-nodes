@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { MarkerType } from "reactflow";
 
 export enum Alignment {
   VERTICAL = "vertical",
@@ -14,14 +15,24 @@ export enum Patterns {
   STICKY_NOTES = "sticky-notes",
 }
 
+export enum EdgeStyle {
+  DEFAULT = "default",
+  END_ARROW = `${MarkerType.Arrow}-1`,
+  CLOSED_END_ARROW = `${MarkerType.ArrowClosed}-1`,
+  BOTH_END_ARROW = `${MarkerType.Arrow}-2`,
+  CLOSED_BOTH_END_ARROW = `${MarkerType.ArrowClosed}-2`,
+}
+
 export interface OptionsProps {
   alignment: Alignment;
   patterns: Patterns;
+  edgeStyle: EdgeStyle;
 }
 
 const initialState: OptionsProps = {
   alignment: Alignment.HORIZONTAL,
   patterns: Patterns.MIND_MAP,
+  edgeStyle: EdgeStyle.DEFAULT,
 };
 
 export const optionsSlice = createSlice({
@@ -34,9 +45,12 @@ export const optionsSlice = createSlice({
     setPattern: (state, action: PayloadAction<Patterns>) => {
       state.patterns = action.payload;
     },
+    setEdgeStyle: (state, action: PayloadAction<EdgeStyle>) => {
+      state.edgeStyle = action.payload;
+    },
   },
 });
 
-export const { setAlignment, setPattern } = optionsSlice.actions;
+export const { setAlignment, setPattern, setEdgeStyle } = optionsSlice.actions;
 
 export default optionsSlice.reducer;

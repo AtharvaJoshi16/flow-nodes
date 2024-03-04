@@ -1,6 +1,8 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { EditorMenu } from "../components/editor-menu";
 import DownloadButton from "../components/download-image";
+import { ReactFlowProvider } from "reactflow";
+import Wrapper from "./wrapper";
 
 export default function CanvasLayout({
   children,
@@ -9,9 +11,8 @@ export default function CanvasLayout({
 }) {
   return (
     <>
-      <ModeToggle />
       <EditorMenu />
-      {children}
+      <Wrapper>{children}</Wrapper>
     </>
   );
 }

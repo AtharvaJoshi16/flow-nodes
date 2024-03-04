@@ -13,6 +13,7 @@ import { EdgeStyles, alignment, frameworks } from "../(options)";
 import { Patterns } from "../(slice)/optionsSlice";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export const EditorMenu = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ export const EditorMenu = () => {
 
   return (
     <div className="flex flex-col gap-[10px] absolute top-[25%] z-10 border-2 p-[10px] rounded-lg left-[20px]">
+      <ModeToggle />
       <Button
         onClick={initiateNewNode}
         title="Add a node"

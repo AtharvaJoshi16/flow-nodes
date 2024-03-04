@@ -21,28 +21,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../(store)";
 import {
   Alignment,
+  EdgeStyle,
   Patterns,
   setAlignment,
+  setEdgeStyle,
   setPattern,
 } from "../(slice)/optionsSlice";
 import { updateNodeHandlePositions } from "../(slice)/nodeSlice";
 import { alignment } from "../(options)";
 import { Position } from "reactflow";
+import { updateEdgeStyle } from "../(slice)/edgeSlice";
 
 export function Combobox({
   list,
   disabled = false,
 }: {
   list: {
+    default: string;
     title: string;
     items: any[];
   };
   disabled?: boolean;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(
-    list.title === "Alignment" ? "horizontal" : "mind-map"
-  );
+  const [value, setValue] = React.useState(list.default);
   const dispatch = useDispatch();
 
   const { title, items } = list;
@@ -96,6 +98,9 @@ export function Combobox({
 
                   title === "Patterns" &&
                     dispatch(setPattern(currentValue as Patterns));
+                  if (title === "Edge Style") {
+                    dispatch(setEdgeStyle(currentValue as EdgeStyle));
+                  }
                 }}
               >
                 <Check

@@ -11,32 +11,30 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
+import { PcCase } from "lucide-react";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
 
   return (
-    <div className="m-[30px]">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
-            <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Toggle theme</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => setTheme("light")}>
-            Light
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("dark")}>
-            Dark
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("system")}>
-            System
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+    <Tabs defaultValue="system" className="w-full">
+      <TabsList className="w-full">
+        <TabsTrigger
+          className="w-full"
+          value="light"
+          onClick={() => setTheme("light")}
+        >
+          <SunIcon width={20} height={20} />
+        </TabsTrigger>
+        <TabsTrigger
+          className="w-full"
+          value="dark"
+          onClick={() => setTheme("dark")}
+        >
+          <MoonIcon width={20} height={20} />
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
   );
 }

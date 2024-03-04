@@ -8,7 +8,7 @@ import { TwitterPicker } from "react-color";
 import { FontBoldIcon, FontItalicIcon } from "@radix-ui/react-icons";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Palette, Trash2 } from "lucide-react";
+import { Baseline, Palette, Trash2 } from "lucide-react";
 import { updateNodeStyle } from "@/app/(slice)/nodeSlice";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,7 +48,6 @@ export const MindMapNode = ({
       fontStyle: styling.italic ? "italic" : "normal",
       color: styling.color,
     };
-    console.log(styling, styles);
     dispatch(updateNodeStyle({ id: node.id, style: styles }));
   }, [styling]);
 
@@ -111,10 +110,7 @@ export const MindMapNode = ({
           <Popover>
             <PopoverTrigger>
               <Button size="icon" variant="outline">
-                <div
-                  style={{ backgroundColor: styling.color }}
-                  className="rounded-full w-[20px] h-[20px]"
-                />
+                <Baseline size={20} color={styling.color} strokeWidth={3} />
               </Button>
             </PopoverTrigger>
             <PopoverContent side="top" className="w-[320px]">

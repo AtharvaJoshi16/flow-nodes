@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Edge } from "reactflow";
+import { Edge, MarkerType } from "reactflow";
+import { EdgeStyle } from "./optionsSlice";
 
 export interface EdgeSliceProps {
   edges: Edge[];
@@ -36,10 +37,82 @@ export const edgeSlice = createSlice({
     deleteEdge: (state, action: PayloadAction<string>) => {
       state.edges = state.edges.filter((item) => item.id !== action.payload);
     },
+    updateEdgeStyle: (state, action: PayloadAction<EdgeStyle>) => {
+      state.edges.forEach((edge) => {
+        switch (action.payload) {
+          case EdgeStyle.END_ARROW: {
+            edge.markerEnd = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.Arrow,
+            };
+            edge.markerStart = undefined;
+            break;
+          }
+          case EdgeStyle.CLOSED_END_ARROW: {
+            edge.markerEnd = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.ArrowClosed,
+            };
+            edge.markerStart = undefined;
+            break;
+          }
+          case EdgeStyle.BOTH_END_ARROW: {
+            edge.markerEnd = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.Arrow,
+            };
+            edge.markerStart = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.Arrow,
+            };
+            break;
+          }
+          case EdgeStyle.CLOSED_BOTH_END_ARROW: {
+            edge.markerEnd = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.ArrowClosed,
+            };
+            edge.markerStart = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.ArrowClosed,
+            };
+            break;
+          }
+          default: {
+            edge.markerStart = undefined;
+            edge.markerEnd = undefined;
+          }
+        }
+      });
+    },
   },
 });
 
-export const { addEdge, updateEdge, updateEdgeTitle, updateEdges, deleteEdge } =
-  edgeSlice.actions;
+export const {
+  addEdge,
+  updateEdge,
+  updateEdgeTitle,
+  updateEdges,
+  deleteEdge,
+  updateEdgeStyle,
+} = edgeSlice.actions;
 
 export default edgeSlice.reducer;

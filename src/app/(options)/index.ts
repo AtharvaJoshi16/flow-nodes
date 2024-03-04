@@ -1,6 +1,7 @@
 import { MarkerType } from "reactflow";
 
 export const frameworks = {
+  default: "mind-map",
   title: "Patterns",
   items: [
     {
@@ -31,6 +32,7 @@ export const frameworks = {
 };
 
 export const alignment = {
+  default: "horizontal",
   title: "Alignment",
   items: [
     {
@@ -45,8 +47,13 @@ export const alignment = {
 };
 
 export const EdgeStyles = {
+  default: "default",
   title: "Edge Style",
   items: [
+    {
+      value: `default`,
+      label: "Default",
+    },
     {
       value: `${MarkerType.Arrow}-1`,
       label: "End Arrow",
