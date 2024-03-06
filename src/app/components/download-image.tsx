@@ -52,7 +52,7 @@ function DownloadButton() {
     <Panel position="top-left">
       <Button
         className="flex items-center gap-[10px]"
-        variant="outline"
+        variant="destructive"
         onClick={onClick}
       >
         Download Image

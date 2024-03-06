@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactFlow, {
   Background,
   Controls,
+  MarkerType,
   MiniMap,
+  Edge,
   ReactFlowProvider,
   applyEdgeChanges,
   applyNodeChanges,
+  useEdges,
   useReactFlow,
+  useUpdateNodeInternals,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { RootState } from "../(store)";
@@ -25,6 +29,7 @@ import {
 import "./styles.css";
 import DownloadButton from "../components/download-image";
 import { v4 } from "uuid";
+import { EdgeStyle } from "../(slice)/optionsSlice";
 
 export default function Canvas() {
   const nodes = useSelector((state: RootState) => state.nodes.nodes);
@@ -33,7 +38,6 @@ export default function Canvas() {
   const edgeStyle = useSelector((state: RootState) => state.options.edgeStyle);
   const dispatch = useDispatch();
   const { screenToFlowPosition } = useReactFlow();
-
   const connectingNodeId = useRef(null);
 
   useEffect(() => {
@@ -45,6 +49,7 @@ export default function Canvas() {
   }, [edgeStyle]);
 
   const nodeTypes = useMemo(() => ({ customNode: CustomNode }), []);
+
   const onNodesChange = useCallback(
     (changes) => {
       dispatch(updateNodes(applyNodeChanges(changes, [...nodes])));
@@ -61,11 +66,74 @@ export default function Canvas() {
 
   const onConnect = useCallback(
     (connection) => {
+      const conn = { ...connection };
+      switch (edgeStyle) {
+        case EdgeStyle.END_ARROW: {
+          conn.markerEnd = {
+            width: 10,
+            height: 10,
+            color: "rgb(255, 196, 2)",
+            strokeWidth: 3,
+            type: MarkerType.Arrow,
+          };
+          conn.markerStart = undefined;
+          break;
+        }
+        case EdgeStyle.CLOSED_END_ARROW: {
+          conn.markerEnd = {
+            width: 10,
+            height: 10,
+            color: "rgb(255, 196, 2)",
+            strokeWidth: 3,
+            type: MarkerType.ArrowClosed,
+          };
+          conn.markerStart = undefined;
+          break;
+        }
+        case EdgeStyle.BOTH_END_ARROW: {
+          conn.markerEnd = {
+            width: 10,
+            height: 10,
+            color: "rgb(255, 196, 2)",
+            strokeWidth: 3,
+            type: MarkerType.Arrow,
+          };
+          conn.markerStart = {
+            width: 10,
+            height: 10,
+            color: "rgb(255, 196, 2)",
+            strokeWidth: 3,
+            type: MarkerType.Arrow,
+          };
+          break;
+        }
+        case EdgeStyle.CLOSED_BOTH_END_ARROW: {
+          conn.markerEnd = {
+            width: 10,
+            height: 10,
+            color: "rgb(255, 196, 2)",
+            strokeWidth: 3,
+            type: MarkerType.ArrowClosed,
+          };
+          conn.markerStart = {
+            width: 10,
+            height: 10,
+            color: "rgb(255, 196, 2)",
+            strokeWidth: 3,
+            type: MarkerType.ArrowClosed,
+          };
+          break;
+        }
+        default: {
+          conn.markerStart = undefined;
+          conn.markerEnd = undefined;
+        }
+      }
+      // console.log(conn);
       connectingNodeId.current = null;
-      dispatch(updateEdges(addEdge(connection, [...edges])));
-      dispatch(updateEdgeStyle(edgeStyle));
+      dispatch(updateEdges(addEdge(conn, [...edges])));
     },
-    [edges]
+    [edges, edgeStyle]
   );
 
   const onConnectEnd = useCallback(
@@ -75,7 +143,6 @@ export default function Canvas() {
       const targetIsPane = event.target.classList.contains("react-flow__pane");
 
       if (targetIsPane) {
-        // we need to remove the wrapper bounds, in order to get the correct position
         const id = v4();
         const newNode = {
           id,
@@ -89,12 +156,73 @@ export default function Canvas() {
         };
 
         dispatch(addNode(newNode));
-        dispatch(
-          addEdgeAction({ id, source: connectingNodeId.current, target: id })
-        );
+        const conn: Edge = { id, source: connectingNodeId.current, target: id };
+        switch (edgeStyle) {
+          case EdgeStyle.END_ARROW: {
+            conn.markerEnd = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.Arrow,
+            };
+            conn.markerStart = undefined;
+            break;
+          }
+          case EdgeStyle.CLOSED_END_ARROW: {
+            conn.markerEnd = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.ArrowClosed,
+            };
+            conn.markerStart = undefined;
+            break;
+          }
+          case EdgeStyle.BOTH_END_ARROW: {
+            conn.markerEnd = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.Arrow,
+            };
+            conn.markerStart = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.Arrow,
+            };
+            break;
+          }
+          case EdgeStyle.CLOSED_BOTH_END_ARROW: {
+            conn.markerEnd = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.ArrowClosed,
+            };
+            conn.markerStart = {
+              width: 10,
+              height: 10,
+              color: "rgb(255, 196, 2)",
+              strokeWidth: 3,
+              type: MarkerType.ArrowClosed,
+            };
+            break;
+          }
+          default: {
+            conn.markerStart = undefined;
+            conn.markerEnd = undefined;
+          }
+        }
+        dispatch(updateEdges(addEdge(conn, [...edges])));
       }
     },
-    [screenToFlowPosition]
+    [screenToFlowPosition, edgeStyle, edges]
   );
 
   const onConnectStart = useCallback((_, { nodeId }) => {

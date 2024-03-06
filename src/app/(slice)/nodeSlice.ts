@@ -41,9 +41,11 @@ export const nodeSlice = createSlice({
       const index = state.nodes.findIndex(
         (item) => item.id === action.payload.id
       );
-      const styles: Object = { ...state.nodes?.[index].style };
-      Object.assign(styles, { ...action.payload.style });
-      state.nodes[index].style = styles as CSSProperties;
+      if (state.nodes?.[index]) {
+        const styles: Object = { ...state.nodes?.[index]?.style };
+        Object.assign(styles, { ...action.payload?.style });
+        state.nodes[index].style = styles as CSSProperties;
+      }
     },
     deleteNode: (state, action: PayloadAction<string>) => {
       state.nodes = state.nodes.filter((item) => item.id !== action.payload);

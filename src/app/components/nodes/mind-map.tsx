@@ -1,9 +1,22 @@
 import { Alignment } from "@/app/(slice)/optionsSlice";
 import { RootState } from "@/app/(store)";
 import { Input } from "@/components/ui/input";
-import { CSSProperties, MouseEvent, useEffect, useRef, useState } from "react";
+import {
+  CSSProperties,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Handle, NodeProps, NodeToolbar, Position } from "reactflow";
+import {
+  Handle,
+  NodeProps,
+  NodeToolbar,
+  Position,
+  useUpdateNodeInternals,
+} from "reactflow";
 import { TwitterPicker } from "react-color";
 import { FontBoldIcon, FontItalicIcon } from "@radix-ui/react-icons";
 
@@ -35,6 +48,15 @@ export const MindMapNode = ({
   });
   const nodeRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+  const updateNodeInternals = useUpdateNodeInternals();
+
+  const updateNodePosition = useCallback(() => {
+    updateNodeInternals(node.id);
+  }, [node.id]);
+
+  useEffect(() => {
+    updateNodePosition();
+  }, [updateNodePosition, alignment]);
 
   useEffect(() => {
     const s = { ...styling };
