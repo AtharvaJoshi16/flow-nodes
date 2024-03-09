@@ -3,22 +3,13 @@
 import * as React from "react";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
-import { PcCase } from "lucide-react";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
-    <Tabs defaultValue="system" className="w-full">
+    <Tabs defaultValue="dark" className="w-full">
       <TabsList className="w-full">
         <TabsTrigger
           className="w-full"

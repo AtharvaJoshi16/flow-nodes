@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import { addNode } from "../(slice)/nodeSlice";
 import { Combobox } from "./combobox";
 import { EdgeStyles, alignment, frameworks } from "../(options)";
-import { Patterns } from "../(slice)/optionsSlice";
+import { Patterns, setShowHandle } from "../(slice)/optionsSlice";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -51,6 +51,12 @@ export const EditorMenu = () => {
         <Switch
           className="[&>span]:bg-sky-700 data-[state=checked]:border-sky-200 data-[state=checked]:bg-sky-200 data-[state=unchecked]:border-slate-200 data-[state=unchecked]:bg-slate-200"
           id="show-handle"
+          onClick={(e) => {
+            const dataState = e.currentTarget.getAttribute("data-state");
+            dataState === "checked"
+              ? dispatch(setShowHandle(false))
+              : dispatch(setShowHandle(true));
+          }}
         />
       </div>
       <Combobox list={frameworks} />

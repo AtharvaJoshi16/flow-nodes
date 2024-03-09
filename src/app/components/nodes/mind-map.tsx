@@ -6,6 +6,7 @@ import {
   MouseEvent,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -21,8 +22,8 @@ import { TwitterPicker } from "react-color";
 import { FontBoldIcon, FontItalicIcon } from "@radix-ui/react-icons";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Baseline, Palette, Trash2 } from "lucide-react";
-import { updateNodeStyle } from "@/app/(slice)/nodeSlice";
+import { Baseline, Palette, Trash, Trash2 } from "lucide-react";
+import { deleteNode, updateNodeStyle } from "@/app/(slice)/nodeSlice";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -40,6 +41,10 @@ export const MindMapNode = ({
   setNodeName,
 }) => {
   const alignment = useSelector((state: RootState) => state.options.alignment);
+  const showHandle = useSelector(
+    (state: RootState) => state.options.showHandle
+  );
+  const [handleStyle, setHandleStyle] = useState<CSSProperties>();
   const { theme } = useTheme();
   const [styling, setStyling] = useState({
     bold: false,
@@ -52,7 +57,7 @@ export const MindMapNode = ({
 
   const updateNodePosition = useCallback(() => {
     updateNodeInternals(node.id);
-  }, [node.id]);
+  }, [node.id, showHandle]);
 
   useEffect(() => {
     updateNodePosition();
@@ -60,7 +65,14 @@ export const MindMapNode = ({
 
   useEffect(() => {
     const s = { ...styling };
-    theme === "dark" ? (s.color = "white") : (s.color = "black");
+    s.color === "" &&
+      (theme === "dark" ? (s.color = "white") : (s.color = "black"));
+    if (s.color === "black" && theme === "dark") {
+      s.color = "white";
+    }
+    if (s.color === "white" && theme === "light") {
+      s.color = "black";
+    }
     setStyling(s);
   }, [theme]);
 
@@ -90,6 +102,22 @@ export const MindMapNode = ({
       }
     }
   };
+
+  useEffect(() => {
+    showHandle
+      ? setHandleStyle({
+          backgroundColor: "#8f54c7",
+          border: "1px solid black",
+          height: "7px",
+          width: "7px",
+        })
+      : setHandleStyle({
+          backgroundColor: "transparent",
+          border: "transparent",
+          width: "20px",
+          height: "20px",
+        });
+  }, [showHandle]);
 
   return (
     <div
@@ -148,10 +176,19 @@ export const MindMapNode = ({
               />
             </PopoverContent>
           </Popover>
+          <Button
+            className="m-1"
+            size="icon"
+            variant="destructive"
+            onClick={() => dispatch(deleteNode(node.id))}
+          >
+            <Trash size={20} />
+          </Button>
         </ToggleGroup>
       </NodeToolbar>
       <Handle
         type="target"
+        style={{ ...handleStyle }}
         position={
           alignment === Alignment.HORIZONTAL ? Position.Left : Position.Top
         }
@@ -172,6 +209,7 @@ export const MindMapNode = ({
       )}
       <Handle
         type="source"
+        style={{ ...handleStyle }}
         position={
           alignment === Alignment.HORIZONTAL ? Position.Right : Position.Bottom
         }

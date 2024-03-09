@@ -72,6 +72,7 @@ export function Combobox({
           <CommandGroup>
             {items.map((item) => (
               <CommandItem
+                disabled={item.disabled}
                 key={item.value}
                 value={item.value}
                 onSelect={(currentValue) => {

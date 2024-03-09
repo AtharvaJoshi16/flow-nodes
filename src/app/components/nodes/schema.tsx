@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import { FontBoldIcon, FontItalicIcon } from "@radix-ui/react-icons";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -12,12 +12,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { deleteNode } from "@/app/(slice)/nodeSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Handle, NodeToolbar, Position } from "reactflow";
 import { InputGroup } from "../input-group";
 import { Input } from "@/components/ui/input";
 import classNames from "classnames";
 import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
+import { RootState } from "@/app/(store)";
 
 interface SchemaNodeData {
   name: string;
@@ -40,6 +41,10 @@ export const SchemaNode = ({
   const [showMenu, setShowMenu] = useState(false);
   const dispatch = useDispatch();
   const nodeRef = useRef<HTMLDivElement>(null);
+  const showHandle = useSelector(
+    (state: RootState) => state.options.showHandle
+  );
+  const [handleStyle, setHandleStyle] = useState<CSSProperties>();
 
   const handleOutsideClick = (e) => {
     if (nodeRef.current && !nodeRef.current.contains(e.target)) {
@@ -81,6 +86,22 @@ export const SchemaNode = ({
     copy.fields[idx] = field;
     setNodeData(copy);
   };
+
+  useEffect(() => {
+    showHandle
+      ? setHandleStyle({
+          backgroundColor: "#8f54c7",
+          border: "1px solid black",
+          height: "10px",
+          width: "10px",
+        })
+      : setHandleStyle({
+          backgroundColor: "transparent",
+          border: "transparent",
+          width: "20px",
+          height: "20px",
+        });
+  }, [showHandle]);
 
   return (
     <div
@@ -140,21 +161,13 @@ export const SchemaNode = ({
         </Button>
       </div>
       <Handle
-        style={{
-          width: "40px",
-          height: "40px",
-          top: "70px",
-        }}
+        style={{ ...handleStyle }}
         type="target"
         position={Position.Left}
         isConnectable
       />
       <Handle
-        style={{
-          width: "40px",
-          height: "40px",
-          top: "70px",
-        }}
+        style={{ ...handleStyle }}
         type="source"
         position={Position.Right}
         isConnectable

@@ -7,6 +7,7 @@ export const frameworks = {
     {
       value: "flowchart",
       label: "Flowchart",
+      disabled: true,
     },
     {
       value: "schema",
@@ -19,14 +20,17 @@ export const frameworks = {
     {
       value: "file-system",
       label: "File System",
+      disabled: true,
     },
     {
       value: "er-diagram",
       label: "ER Diagram",
+      disabled: true,
     },
     {
       value: "sticky-notes",
       label: "Sticky Notes",
+      disabled: true,
     },
   ],
 };

@@ -4,13 +4,6 @@
   stroke-linecap: round;
 }
 
-.react-flow__handle {
-  background-color: transparent;
-  border: transparent;
-  width: 20px;
-  height: 20px;
-}
-
 .react-flow__attribution {
   display: none;
 }

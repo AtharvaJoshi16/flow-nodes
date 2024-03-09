@@ -27,12 +27,14 @@ export interface OptionsProps {
   alignment: Alignment;
   patterns: Patterns;
   edgeStyle: EdgeStyle;
+  showHandle: boolean;
 }
 
 const initialState: OptionsProps = {
   alignment: Alignment.HORIZONTAL,
   patterns: Patterns.MIND_MAP,
   edgeStyle: EdgeStyle.DEFAULT,
+  showHandle: false,
 };
 
 export const optionsSlice = createSlice({
@@ -48,9 +50,13 @@ export const optionsSlice = createSlice({
     setEdgeStyle: (state, action: PayloadAction<EdgeStyle>) => {
       state.edgeStyle = action.payload;
     },
+    setShowHandle: (state, action: PayloadAction<boolean>) => {
+      state.showHandle = action.payload;
+    },
   },
 });
 
-export const { setAlignment, setPattern, setEdgeStyle } = optionsSlice.actions;
+export const { setAlignment, setPattern, setEdgeStyle, setShowHandle } =
+  optionsSlice.actions;
 
 export default optionsSlice.reducer;
