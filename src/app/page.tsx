@@ -6,12 +6,7 @@ export default function Home() {
   return (
     <div className="m-5 flex flex-col gap-[50px]">
       <div className="m-auto justify-center flex items-center gap-[20px]">
-        <Image
-          src="/data-flow.png"
-          width={50}
-          height={50}
-          alt="flow-nodes-logo"
-        />
+        <Image src="/icon.png" width={50} height={50} alt="flow-nodes-logo" />
         <h2 className="font-bold text-3xl">Flow Nodes</h2>
       </div>
       <Link href="/canvas">
