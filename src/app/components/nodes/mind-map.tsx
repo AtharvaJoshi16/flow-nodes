@@ -50,7 +50,10 @@ export const MindMapNode = ({
     bold: false,
     italic: false,
     color: "",
+    fontSize: 20,
   });
+  const [defaultValues, setDefaultValues] = useState<string[]>([]);
+
   const nodeRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const updateNodeInternals = useUpdateNodeInternals();
@@ -81,8 +84,17 @@ export const MindMapNode = ({
       fontWeight: styling.bold ? 700 : 500,
       fontStyle: styling.italic ? "italic" : "normal",
       color: styling.color,
+      fontSize: styling.fontSize,
     };
     dispatch(updateNodeStyle({ id: node.id, style: styles }));
+    let toggleGroupValues: string[] = [];
+    if (styling.bold) {
+      toggleGroupValues.push("bold");
+    }
+    if (styling.italic) {
+      toggleGroupValues.push("italic");
+    }
+    setDefaultValues(toggleGroupValues);
   }, [styling]);
 
   const handleOption = (e, opt: string) => {
@@ -141,6 +153,7 @@ export const MindMapNode = ({
         style={{ top: "-10px" }}
       >
         <ToggleGroup
+          defaultValue={defaultValues}
           variant="outline"
           className="border-2 border-slate-500 rounded-md p-1"
           type="multiple"
@@ -157,6 +170,16 @@ export const MindMapNode = ({
           >
             <FontItalicIcon strokeWidth={3} />
           </ToggleGroupItem>
+          <Input
+            onChange={(e) => {
+              const copy = { ...styling };
+              copy.fontSize = parseInt(e.target.value);
+              setStyling(copy);
+            }}
+            value={styling.fontSize}
+            className="w-fit w-[80px]"
+            type="number"
+          />
           <Popover>
             <PopoverTrigger>
               <Button size="icon" variant="outline">
