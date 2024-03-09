@@ -9,10 +9,10 @@ import {
 import { toPng } from "html-to-image";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { useTheme } from "next-themes";
 
 function downloadImage(dataUrl) {
   const a = document.createElement("a");
-
   a.setAttribute("download", "reactflow.png");
   a.setAttribute("href", dataUrl);
   a.click();
@@ -23,6 +23,7 @@ const imageHeight = 768;
 
 function DownloadButton() {
   const { getNodes } = useReactFlow();
+  const { theme } = useTheme();
   const onClick = () => {
     // we calculate a transform for the nodes so that all nodes are visible
     // we then overwrite the transform of the `.react-flow__viewport` element
@@ -37,7 +38,7 @@ function DownloadButton() {
     );
 
     toPng(document.querySelector(".react-flow__viewport") as HTMLElement, {
-      backgroundColor: "#1a365d",
+      backgroundColor: theme === "dark" ? "black" : "white",
       width: imageWidth,
       height: imageHeight,
       style: {
