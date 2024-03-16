@@ -1,14 +1,9 @@
 import { FilePlus2 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="m-5 flex flex-col gap-[50px]">
-      <div className="m-auto justify-center flex items-center gap-[20px]">
-        <Image src="/icon.png" width={50} height={50} alt="flow-nodes-logo" />
-        <h2 className="font-bold text-3xl">Flow Nodes</h2>
-      </div>
       <Link href="/canvas">
         <div className="cursor-pointer hover:bg-slate-200 w-[250px] h-[300px] bg-white border-2 rounded-md flex flex-col items-center">
           <div className="my-auto flex flex-col items-center gap-[20px]">

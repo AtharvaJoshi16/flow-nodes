@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Trash } from "lucide-react";
 import cn from "classnames";
 import { Input } from "@/components/ui/input";
-import { Menu } from "./menu";
 import { MindMapNode } from "./nodes/mind-map";
 import { RootState } from "../(store)";
 import { Patterns } from "../(slice)/optionsSlice";

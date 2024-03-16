@@ -13,6 +13,7 @@ export enum Patterns {
   SCHEMA = "schema",
   ERD = "er-diagram",
   STICKY_NOTES = "sticky-notes",
+  TURBO = "turbo",
 }
 
 export enum EdgeStyle {

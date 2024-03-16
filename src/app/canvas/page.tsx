@@ -38,6 +38,7 @@ export default function Canvas() {
   const edgeStyle = useSelector((state: RootState) => state.options.edgeStyle);
   const dispatch = useDispatch();
   const { screenToFlowPosition } = useReactFlow();
+
   const connectingNodeId = useRef(null);
 
   useEffect(() => {
@@ -230,7 +231,7 @@ export default function Canvas() {
   }, []);
 
   return (
-    <div className="h-[100vh] w-[100vw] m-auto">
+    <div className="h-[90vh] w-[100vw] m-auto">
       <ReactFlow
         nodes={nodes}
         edges={edges}

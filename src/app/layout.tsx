@@ -3,6 +3,7 @@ import { Rubik } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "./components/client-wrapper";
 import { ThemeProvider } from "@/components/theme-provider";
+import { SessionProvider } from "next-auth/react";
 
 const rubik = Rubik({ subsets: ["latin"] });
 
